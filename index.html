@@ -200,7 +200,9 @@
 
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('translate-x-full'); }
 
-        const API_URL = "https://script.google.com/macros/s/AKfycbzQLS-_iWYkCftpjo8h1Qt3jwsCQCb0b7XIFgBAor1iwIDd5vzUwjLPiNf1c-AlEyd7/exec";
+        // 使用最新的 API URL
+        const API_URL = "https://script.google.com/macros/s/AKfycbyp9yolS2IioOuawYarImMi3kKukPScUYDd5mvsvnJgTtJVOwONQY5AS1_iJgwi1kYY/exec";
+        
         let MOCK_DATA = [];
         let gridData = [], currentIndex = 0;
         let slideIndex = 0, slideTimer;
@@ -408,7 +410,7 @@
                 }
             }
             
-            // 動態修改標題與 Meta Tag
+            // 動態修改標題與 Meta Tag (針對單純在瀏覽器分頁上顯示標題使用)
             document.title = item.title + " | 兩岸新聞網";
             const ogTitle = document.querySelector('meta[property="og:title"]');
             const ogDesc = document.querySelector('meta[property="og:description"]');
@@ -426,7 +428,7 @@
             
             let htmlParts = [];
             
-            // 主圖 (大圖) -> 靠左排版 (text-left)
+            // 主圖 (大圖) 
             if(item.image_url) {
                 htmlParts.push(`
                     <div class="mb-10 group">
@@ -440,7 +442,7 @@
             
             if(item.content_1) htmlParts.push(`<div class="article-content mb-12 text-gray-300 leading-relaxed text-lg">${formatContent(item.content_1)}</div>`);
             
-            // 內容圖 1 -> 靠左排版 (text-left)
+            // 內容圖 1 
             if(item.content_img1_url) {
                 htmlParts.push(`
                     <div class="mb-10 group relative md:px-10">
@@ -454,7 +456,7 @@
             
             if(item.content_2) htmlParts.push(`<div class="article-content mb-12 text-gray-300 leading-relaxed text-lg">${formatContent(item.content_2)}</div>`);
             
-            // 內容圖 2 -> 靠左排版 (text-left)
+            // 內容圖 2 
             if(item.content_img2_url) {
                 htmlParts.push(`
                     <div class="mb-10 group relative md:px-10">
@@ -467,6 +469,18 @@
             }
             
             if(item.content_3) htmlParts.push(`<div class="article-content mb-12 text-gray-300 leading-relaxed text-lg">${formatContent(item.content_3)}</div>`);
+
+            // 新增：分享專屬連結按鈕（生成對應到 GAS 的爬蟲專用網址）
+            const gasShareUrl = `${API_URL}?id=${item.id}`;
+            htmlParts.push(`
+                <div class="mt-8 mb-6 border-t border-white/10 pt-8 flex flex-col items-start gap-3">
+                    <button onclick="navigator.clipboard.writeText('${gasShareUrl}'); alert('已複製專屬分享網址！\\n請直接將此連結貼到 LINE 或 Facebook 上，即可顯示正確的預覽畫面與標題。');" 
+                            class="bg-[var(--neon-lime)] text-black px-6 py-3 rounded-full font-black text-sm tracking-widest uppercase hover:bg-white transition-all shadow-[0_0_15px_rgba(204,255,0,0.3)]">
+                        <iconify-icon icon="lucide:share-2" class="inline-block mr-1 align-text-bottom text-lg"></iconify-icon> 複製社群專用分享連結
+                    </button>
+                    <p class="text-[11px] text-white/40 tracking-wider">※ 提示：請務必點擊上方按鈕複製專屬連結，才能在 LINE 上正常顯示縮圖與標題喔！</p>
+                </div>
+            `);
             
             document.getElementById('detail-main-body').innerHTML = htmlParts.join('');
 
