@@ -2,15 +2,13 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
     <link rel="icon" href="https://hackmd.io/_uploads/rk1BYvjyMx.png" type="image/png">
-    
     <meta property="og:title" content="兩岸新聞網 | China-Taiwan Link">
     <meta property="og:description" content="獨立觀察，跨域思維，重構兩岸新視界。">
     <meta property="og:image" content="https://hackmd.io/_uploads/rk1BYvjyMx.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="兩岸新聞網">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>兩岸新聞網 | China-Taiwan Link</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -410,6 +408,14 @@
                 }
             }
             
+            // 動態修改標題與 Meta Tag
+            document.title = item.title + " | 兩岸新聞網";
+            const ogTitle = document.querySelector('meta[property="og:title"]');
+            const ogDesc = document.querySelector('meta[property="og:description"]');
+            
+            if (ogTitle) ogTitle.setAttribute("content", item.title);
+            if (ogDesc) ogDesc.setAttribute("content", item.title); 
+
             if(document.getElementById('main-wrap').classList.contains('hidden') === false) {
                 scrollPosBeforeDetail = window.scrollY;
             }
@@ -496,6 +502,15 @@
                     history.replaceState(null, null, ' ');
                 }
             }
+
+            // 還原首頁的標題與 Meta 標籤
+            document.title = "兩岸新聞網 | China-Taiwan Link";
+            const ogTitle = document.querySelector('meta[property="og:title"]');
+            const ogDesc = document.querySelector('meta[property="og:description"]');
+            
+            if (ogTitle) ogTitle.setAttribute("content", "兩岸新聞網 | China-Taiwan Link");
+            if (ogDesc) ogDesc.setAttribute("content", "獨立觀察，跨域思維，重構兩岸新視界。");
+
             document.getElementById('detail-view').classList.add('hidden');
             document.getElementById('main-wrap').classList.remove('hidden');
             window.scrollTo({ top: scrollPosBeforeDetail, behavior: 'auto' });
